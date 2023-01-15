@@ -1,4 +1,4 @@
-# APMinerTool [V1.0.11]: Download, Setup and How to Use [Windows/Linux/MacOS]
+# APMinerTool: Download, Setup and How to Use [Windows/Linux/MacOS]
 
 ![image](https://user-images.githubusercontent.com/98889829/212470593-eea9586e-089e-41b1-b6a7-bfadabba9711.png)
 

@@ -4,7 +4,7 @@
 
 APMinerTool - is a mining farm monitoring software that can scan multiple LAN IP segments at the same time and can monitor ASIC operation status in batch. The software supports alert settings, IP ranges, firmware, etc.
 
-[Download APMinerTool v1.0.11 for Windows/Linux/MacOS](https://github.com/EddieLise/APMinerTool/releases/download/APMinerTool_V1.0.11/APMinerTool_1.0.11_portable.rar)
+[Download APMinerTool v1.0.11 for Windows/Linux/MacOS](https://github.com/EddieLise/APMinerTool/releases/download/apminertool/APMinerTool_1.0.11_portable.rar)
 ------------------------------------------------------------------
 ## Features
 + Batch monitoring of the state of the ASIC.
